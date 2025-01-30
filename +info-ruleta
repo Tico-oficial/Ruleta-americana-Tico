@@ -1,0 +1,21 @@
+PREFIJO: +info-ruleta (o el que quieras)
+
+$nomention
+$title[🎮 | Info-Ruleta]
+$description[Para apostar usando la ruleta sigue este formato:
+``$ruleta <apuesta> <espacio>``]
+$addField[Espacios para apostar;
+> - x36: Solo número
+> - x3: Docenas (1-12, 13-24, 25-36)
+> - x3: Columnas (1st, 2nd, 3rd)
+> - x2: Mitades (1-18, 19-36)
+> - x2: impar/par
+> - x2: Colores (rojo, negro)]
+$addField[Ejemplos;
+> - ``$ruleta 100 rojo``
+> - ``$ruleta 100 34``
+> - ``$ruleta 100 par``
+> - ``$ruleta 100 1-18``
+> - ``$ruleta 100 1st``]
+$image[https://i.imgur.com/ErU6uGU.jpg]
+$color[$random[000000;999999]]
