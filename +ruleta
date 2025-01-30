@@ -1,0 +1,180 @@
+$nomention
+$c[RELLENA ESTO 👇]
+
+$var[var;NOMBRE DE TU VARIABLE] $c[Especifica el nombre de tu variable]
+$var[tip;TIPO DE TU VARIABLE (global o local)] $c[Por favor especificar, solo acepta "global" o "local", así en minúscula]
+$var[min;MINIMO DE APUESTA] $c[Mínimo de apuesta]
+$var[cd;COOLDOWN solo segundos (ejemplo: 30)] $c[Configura el cooldown, solo números. El cooldown es en segundo]
+
+$c[RELLENA ESTO 👆]
+
+$if[$or[$var[tip]===global;$var[tip]==local]==true]
+$if[$isNumber[$var[min]]==true]
+$if[$isNumber[$var[cd]]==true]
+$else
+$addField[❌ | Error;
+Por favor en el cooldown solo colocar números]
+$color[ff000]
+$stop
+$endif
+$else
+$addField[❌ | Error;
+Por favor en mínimo de apuesta colocar solo números]
+$color[ff0000]
+$stop
+$endif
+$else
+$addField[❌ | Error;
+Por favor especificar si tu variable es **global o local**]
+$color[ff0000]
+$stop
+$endif
+
+$argsCheck[>2;❌ | Sigue el formato **``$ruleta <apuesta> <espacio>``**
+-# Usa $info-ruleta]
+$onlyIf[$isNumber[$message[1]]==true;❌ | Sigue el formato **``$ruleta <apuesta> <espacio>``**
+-# Usa $info-ruleta]
+$onlyIf[$or[$message[2]==1-12;$message[2]==13-24;$message[2]==25-36;$message[2]==1st;$message[2]==2nd;$message[2]==3rd;$message[2]==1-18;$message[2]==19-36;$message[2]==impar;$message[2]==par;$message[2]==rojo;$message[2]==negro;$isNumber[$message[2]]==true]==true;❌ | Sigue el formato **``$ruleta <apuesta> <espacio>``**
+-# Usa $info-ruleta]
+
+$onlyIf[$message[1]>=$var[min];❌ | Solo se permiten apuestas igual mayores a **$var[min]**]
+$onlyIf[$replaceText[$replaceText[$checkCondition[$var[tip]==global];true;$getVar[$var[var]];1];false;$getUserVar[$var[var]];1]>=$message[1];❌ | No tenes esa cantidad de dinero]
+
+$if[$isNumber[$message[2]]==true]
+$onlyIf[$and[$message[2]>=0;$message[2]<=36]==true;❌ | El número tiene que ser entre 0 y 36]
+$endif
+
+$changeCooldownTime[días;horas;minutos;segundos]
+$cooldown[$var[cd]s;❌ | Ya tenés un juego en curso, espera a que termine <t:$sum[$getTimestamp;$getCooldown[normal]]:R>]
+$var[número;$random[0;36]]
+$var[op;$message[2]]
+
+$if[$or[$var[número]==1;$var[número]==3;$var[número]==5;$var[número]==7;$var[número]==9;$var[número]==12;$var[número]==14;$var[número]==16;$var[número]==18;$var[número]==19;$var[número]==21;$var[número]==23;$var[número]==25;$var[número]==27;$var[número]==30;$var[número]==32;$var[número]==34;$var[número]==36]==true]
+$var[resul;$var[número] rojo]
+$else
+$var[resul;$var[número] negro]
+$endif
+
+$sendEmbedMessage[$channelID;;;;
+## 🎮 | Apostando...;6e00ff;;;Espera $var[cd] segundos;;;;;]
+
+$if[$var[tip]==global]
+$setVar[$var[var];$sub[$getVar[$var[var]];$message[1]]]
+$else
+$setUserVar[$var[var];$sub[$getUserVar[$var[var]];$message[1]]]
+$endif
+
+$if[$and[$isNumber[$var[op]]==true;$var[op]>=0;$var[op]<=36]==true]
+$if[$message[1]==$var[número]]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==1-12]
+$if[$and[$var[número]>=1;$var[número]<=12]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==13-24]
+$if[$and[$var[número]>=13;$var[número]<=24]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==25-36]
+$if[$and[$var[número]>=25;$var[número]<=36]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==1st]
+$if[$or[$var[número]==1;$var[número]==4;$var[número]==7;$var[número]==10;$var[número]==13;$var[número]==16;$var[número]==19;$var[número]==22;$var[número]==25;$var[número]==28;$var[número]==31;$var[número]==34]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==2nd]
+$if[$or[$var[número]==2;$var[número]==5;$var[número]==8;$var[número]==11;$var[número]==14;$var[número]==17;$var[número]==20;$var[número]==23;$var[número]==26;$var[número]==29;$var[número]==32;$var[número]==35]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==3rd]
+$if[$or[$var[número]==3;$var[número]==6;$var[número]==9;$var[número]==12;$var[número]==15;$var[número]==18;$var[número]==21;$var[número]==24;$var[número]==27;$var[número]==30;$var[número]==33;$var[número]==36]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==1-18]
+$if[$and[$var[número]>=1;$var[número]<=18]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==19-36]
+$if[$and[$var[número]>=19;$var[número]<=36]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==impar]
+$if[$calculate[$var[número]%2]!=0]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==par]
+$if[$calculate[$var[número]%2]==0]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==rojo]
+$if[$or[$var[número]==1;$var[número]==3;$var[número]==5;$var[número]==7;$var[número]==9;$var[número]==12;$var[número]==14;$var[número]==16;$var[número]==18;$var[número]==19;$var[número]==21;$var[número]==23;$var[número]==25;$var[número]==27;$var[número]==30;$var[número]==32;$var[número]==34;$var[número]==36]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$elseif[$var[op]==negro]
+$if[$or[$var[número]==2;$var[número]==4;$var[número]==6;$var[número]==8;$var[número]==10;$var[número]==11;$var[número]==13;$var[número]==15;$var[número]==17;$var[número]==20;$var[número]==22;$var[número]==24;$var[número]==26;$var[número]==28;$var[número]==29;$var[número]==31;$var[número]==33;$var[número]==35]==true]
+$var[gano;si]
+$else
+$var[gano;no]
+$endif
+
+$endif
+
+$async[re]
+$replyIn[$var[cd]]
+$endasync
+$await[re]
+
+$if[$var[gano]==si]
+$if[$var[tip]==global]
+$setVar[$var[var];$sum[$getVar[$var[var]];$multi[$message[1];2]]]
+$else
+$setUserVar[$var[var];$sum[$getUserVar[$var[var]];$multi[$message[1];2]]]
+$endif
+$endif
+
+$sendEmbedMessage[$channelID;<@$authorID>;
+🎮 | Ruleta;;
+> - **Apostaste:** $$numberSeparator[$message[1]] dólares a $message[2]
+> - **Resultado:** $var[resul]
+
+Apostaste **$$numberSeparator[$message[1]] dólares** y $replaceText[$replaceText[$checkCondition[$var[gano]==si];true;ganaste **$$numberSeparator[$multi[$message[1];2]] dólares**. ¡Felicidades! 🥳;1];false;perdiste tus **$$numberSeparator[$message[1]] dólares**. ¡Qué mala suerte! 😢;1]
+
+;$replaceText[$replaceText[$checkCondition[$var[gano]==si];true;00ff00;1];false;ff0000;1];;;;;;;;]
